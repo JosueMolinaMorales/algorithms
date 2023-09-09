@@ -7,6 +7,66 @@ import (
 	"github.com/JosueMolinaMorales/algorithms/internal/data_structures/heap"
 )
 
+func TestPopOperation(t *testing.T) {
+	tests := []struct {
+		name     string
+		arr      []int
+		heapType int
+		expected []int
+	}{
+		{
+			name:     "MaxHeap: Empty array",
+			arr:      []int{},
+			heapType: heap.MaxHeap,
+			expected: []int{},
+		},
+		{
+			name:     "MaxHeap: Already max heap",
+			arr:      []int{5, 4, 3, 2, 1},
+			heapType: heap.MaxHeap,
+			expected: []int{4, 3, 2, 1},
+		},
+		{
+			name:     "MaxHeap: Random order",
+			arr:      []int{3, 2, 1, 5, 4},
+			heapType: heap.MaxHeap,
+			expected: []int{4, 3, 2, 1},
+		},
+		{
+			name:     "MinHeap: Empty array",
+			arr:      []int{},
+			heapType: heap.MinHeap,
+			expected: []int{},
+		},
+		{
+			name:     "MinHeap: Already min heap",
+			arr:      []int{1, 2, 3, 4, 5},
+			heapType: heap.MinHeap,
+			expected: []int{2, 3, 4, 5},
+		},
+		{
+			name:     "MinHeap: Random order",
+			arr:      []int{5, 4, 3, 2, 1},
+			heapType: heap.MinHeap,
+			expected: []int{2, 3, 5, 4},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			h := heap.Heapify(test.arr, test.heapType)
+			el, err := h.Pop()
+			if len(test.arr) == 0 && err == nil {
+				t.Fatalf("Pop() = %v, expected error", el)
+			} else if !reflect.DeepEqual(h.Heap, test.expected) {
+				t.Errorf("Pop() = %v, expected %v", h.Heap, test.expected)
+			} else if len(test.arr) > 0 && el != test.arr[0] {
+				t.Errorf("Pop() = %v, expected %v", el, test.arr[0])
+			}
+		})
+	}
+}
+
 func TestInsertOperation(t *testing.T) {
 	tests := []struct {
 		name     string
